@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable, of, BehaviorSubject } from 'rxjs';
-import { shareReplay, switchMap } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject, timer } from 'rxjs';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 
 
 @Component({
@@ -14,6 +14,9 @@ export class AppComponent implements OnInit {
 
   refresh$ = new BehaviorSubject(null);
   data$: Observable<any> = of([]);
+  time$ = timer(500, 1000).pipe(
+    map((v, idx) => new Date().toString())
+  );
 
   constructor(private http: HttpClient) {}
 
