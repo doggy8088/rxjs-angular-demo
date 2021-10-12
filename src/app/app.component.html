@@ -1,4 +1,9 @@
-Count: {{ (data$|async)?.length }}
+
+<button (click)="refresh()">重新整理</button>
+
+<div>
+  Count: {{ (data$|async)?.length }}
+</div>
 
 <table border="1">
   <tr>
