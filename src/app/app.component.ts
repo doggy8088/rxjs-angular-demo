@@ -16,7 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
   refresh$ = new BehaviorSubject(null);
   data$: Observable<any> = of([]);
   time$ = timer(500, 1000).pipe(
-    map((v, idx) => new Date().toString()),
+    map((v, idx) => new Date(10*60*1000 - v*1000).toJSON().substr(11, 8)),
     takeUntil(this.destroy$)
   );
 
