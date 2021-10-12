@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, of, BehaviorSubject, timer, Subject } from 'rxjs';
-import { map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject, timer, Subject, merge } from 'rxjs';
+import { map, shareReplay, switchMap, take, takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -15,9 +15,10 @@ export class AppComponent implements OnInit, OnDestroy {
   destroy$ = new Subject();
   refresh$ = new BehaviorSubject(null);
   data$: Observable<any> = of([]);
-  time$ = timer(500, 1000).pipe(
+  timeout$ = timer(10*60*1000).pipe(take(1));
+  time$ = timer(0, 1000).pipe(
     map((v, idx) => new Date(10*60*1000 - v*1000).toJSON().substr(11, 8)),
-    takeUntil(this.destroy$)
+    takeUntil(merge(this.destroy$, this.timeout$))
   );
 
   constructor(private http: HttpClient) {}
